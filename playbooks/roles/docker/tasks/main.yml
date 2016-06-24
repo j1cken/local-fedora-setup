@@ -1,0 +1,17 @@
+---
+- name: stop docker service
+  service: name=docker state=stopped
+
+#- name: delete /var/lib/docker
+#  file: path=/var/lib/docker state=absent
+- name: delete /var/lib/docker
+  shell: rm -rf /var/lib/docker
+
+- name: setup docker storage volume group
+  lineinfile: state=present dest=/etc/sysconfig/docker-storage-setup regexp=^VG line=VG=docker
+
+- name: setup docker storage sizing
+  lineinfile: state=present dest=/etc/sysconfig/docker-storage-setup regexp=^DATA_SIZE line=DATA_SIZE=0%FREE
+
+- name: start docker service
+  service: name=docker state=restarted

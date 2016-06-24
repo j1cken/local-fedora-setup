@@ -1,0 +1,22 @@
+---
+- name: install basic packages
+  dnf: name={{ item }} state=present
+  with_items:
+    - zsh
+    - git
+    - keepassx
+    - libselinux-python
+    - docker
+
+- name: check for atom packages
+  dnf: name=atom state=present
+  register: atom_installed
+
+- name: install atom
+  dnf: name=https://github.com/atom/atom/releases/download/v{{atom_version}}/atom.x86_64.rpm state=present
+  when: not atom_installed
+
+- name: start basic services
+  service: name={{ item }} state=restarted
+  with_items:
+    - libvirtd

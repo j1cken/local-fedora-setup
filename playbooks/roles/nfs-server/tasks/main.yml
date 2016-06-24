@@ -1,0 +1,15 @@
+---
+- name: persistent nfsstorage export
+  lineinfile: state=present dest=/etc/exports regexp=^/opt/nfsstorage line='/opt/nfsstorage 192.168.122.0/24(rw,async,root_squash)'
+
+- name: create mount directory
+  file: path=/opt/nfsstorage state=directory
+
+- name: create logical volume for nfsstorage
+  lvol: vg=docker lv=nfsstorage size=10G
+
+- name: persistent nfsstorage logical volume mount
+  lineinfile: state=present dest=/etc/fstab regexp=^/dev/mapper/docker-nfsstorage line='/dev/mapper/docker-nfsstorage /opt/nfsstorage   xfs     defaults,x-systemd.device-timeout=0 0 0'
+
+- name: restarting nfs-server
+  service: name=nfs-server state=restarted
