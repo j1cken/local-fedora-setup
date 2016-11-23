@@ -1,9 +1,10 @@
 - hosts: localhost
   connection: localhost
   vars:
-    - atom_version: 1.8.0
+    - atom_version: 1.12.5
   roles:
   - basic
   - { role: nfs-server }
   - docker
   - nodejs
+  - google-cloud-sdk

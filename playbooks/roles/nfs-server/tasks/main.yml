@@ -8,6 +8,9 @@
 - name: create logical volume for nfsstorage
   lvol: vg=docker lv=nfsstorage size=10G
 
+- name: Format nfsstorage LV
+  filesystem: fstype=xfs dev=/dev/mapper/docker-nfsstorage
+
 - name: persistent nfsstorage logical volume mount
   lineinfile: state=present dest=/etc/fstab regexp=^/dev/mapper/docker-nfsstorage line='/dev/mapper/docker-nfsstorage /opt/nfsstorage   xfs     defaults,x-systemd.device-timeout=0 0 0'
 
