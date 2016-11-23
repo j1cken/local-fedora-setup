@@ -14,6 +14,10 @@
     - i3
     - i3lock
     - i3status
+    - screen
+    - libvirt-client
+    - feh
+    - xcompmgr
 
 - name: check for atom packages
   dnf: name=atom state=present
