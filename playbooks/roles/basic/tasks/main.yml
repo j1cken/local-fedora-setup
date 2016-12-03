@@ -18,6 +18,8 @@
     - libvirt-client
     - feh
     - xcompmgr
+    - xbacklight
+    - pulseaudio
 
 - name: check for atom packages
   dnf: name=atom state=present
