@@ -13,13 +13,18 @@
     - nmap
     - i3
     - i3lock
-    - i3status
+    - i3blocks
     - screen
     - libvirt-client
     - feh
     - xcompmgr
     - xbacklight
     - pulseaudio
+    - firewall-config
+    - tuned
+    - lm_sensors
+    - acpi
+    - sysstat
 
 - name: check for atom packages
   dnf: name=atom state=present
@@ -31,6 +36,7 @@
   when: atom_installed|failed
 
 - name: start basic services
-  service: name={{ item }} state=restarted
+  service: name={{ item }} state=restarted enabled=yes
   with_items:
     - libvirtd
+    - tuned
