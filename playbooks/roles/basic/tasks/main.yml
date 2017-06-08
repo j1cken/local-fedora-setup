@@ -11,9 +11,6 @@
     - libvirt-daemon-config-network
     - strace
     - nmap
-    - i3
-    - i3lock
-    - i3blocks
     - screen
     - libvirt-client
     - feh
@@ -25,6 +22,9 @@
     - lm_sensors
     - acpi
     - sysstat
+    - nitrokey-app
+    - p7zip
+    - powertop
 
 - name: check for atom packages
   dnf: name=atom state=present

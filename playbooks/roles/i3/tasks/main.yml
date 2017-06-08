@@ -1,0 +1,9 @@
+---
+- name: install i3 packages
+  dnf: name={{ item }} state=present
+  with_items:
+    - i3
+    - i3lock
+
+    # use bumblebee instead
+    # - i3blocks
