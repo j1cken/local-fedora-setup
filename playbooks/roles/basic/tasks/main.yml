@@ -1,4 +1,8 @@
 ---
+- name: update installed packages
+  debug:
+    msg: "*****TBD*****"
+
 - name: install basic packages
   dnf: name={{ item }} state=present
   with_items:
@@ -6,7 +10,6 @@
     - git
     - keepassx
     - libselinux-python
-    - docker
     - virt-manager
     - libvirt-daemon-config-network
     - strace
@@ -25,6 +28,11 @@
     - nitrokey-app
     - p7zip
     - powertop
+    - lsyncd
+    - vim-enhanced
+    - tcpdump
+    - tlp
+    - chromium
 
 - name: check for atom packages
   dnf: name=atom state=present
