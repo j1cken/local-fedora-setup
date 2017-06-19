@@ -1,0 +1,16 @@
+---
+- name: check for multi-queue block i/o kernel option
+  shell: grep scsi_mod.use_blk_mq /etc/sysconfig/grub
+  register: blk_mq_present
+  failed_when: "blk_mq_present == 2"
+  changed_when: false
+
+- name: enable multi-queue block i/o kernel option
+  lineinfile:
+    path: /etc/sysconfig/grub
+    backrefs: yes
+    regexp: '^(GRUB_CMDLINE_LINUX=.*)"$'
+    line: '\1 scsi_mod.use_blk_mq=1"'
+    backup: yes
+  when: blk_mq_present.rc|int == 1
+  notify: "generate grub config"
