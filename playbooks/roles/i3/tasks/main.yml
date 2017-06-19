@@ -4,6 +4,9 @@
   with_items:
     - i3
     - i3lock
+    - python2-psutil
+    - python2-netifaces
+    - fontawesome-fonts
 
     # use bumblebee instead
     # - i3blocks

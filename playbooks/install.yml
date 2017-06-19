@@ -8,9 +8,9 @@
   - docker
   - nodejs
   - google-cloud-sdk
-  - i3
+  - { role: i3, tags: ['new'] }
   - { role: trim, tags: [] }
   - { role: blk-mq, tags: [] }
-  - { role: ovpn, tags: ['new'] }
+  - { role: ovpn, tags: [] }
 
   # - { role: blk-mq, tags: ['new'] }
