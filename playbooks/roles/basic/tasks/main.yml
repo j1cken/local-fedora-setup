@@ -1,7 +1,8 @@
 ---
 - name: update installed packages
-  debug:
-    msg: "*****TBD*****"
+  dnf:
+    name: "*"
+    state: latest
 
 - name: install basic packages
   dnf: name={{ item }} state=present
