@@ -9,7 +9,8 @@
   - nodejs
   - google-cloud-sdk
   - i3
-  - { role: trim, tags: ['new'] }
-  - { role: blk-mq, tags: ['new'] }
+  - { role: trim, tags: [] }
+  - { role: blk-mq, tags: [] }
+  - { role: ovpn, tags: ['new'] }
 
   # - { role: blk-mq, tags: ['new'] }
