@@ -1,0 +1,55 @@
+---
+- name: check for trim discard already present
+  shell: grep discard /etc/crypttab
+  register: discard_present
+  failed_when: "discard_present == 2"
+  changed_when: false
+
+- name: enable trim for dm-crypt (assuming no other options are set)
+  replace:
+    path: /etc/crypttab
+    regexp: 'none'
+    replace: 'none discard'
+    backup: yes
+  when: discard_present.rc|int == 1
+  register: crypttab
+
+- name: enable trim for lvm
+  lineinfile:
+    path: /etc/lvm/lvm.conf
+    backrefs: yes
+    regexp: '(\s)issue_discards = 0$'
+    line: '\1issue_discards = 1'
+    backup: yes
+  register: lvm
+
+- name: check for luks discard kernel option
+  shell: grep rd.luks.options /etc/sysconfig/grub
+  register: luks_discard_present
+  failed_when: "luks_discard_present == 2"
+  changed_when: false
+
+- name: enable luks discard kernel option
+  lineinfile:
+    path: /etc/sysconfig/grub
+    backrefs: yes
+    regexp: '^(GRUB_CMDLINE_LINUX=.*)"$'
+    line: '\1 rd.luks.options=discard"'
+    backup: yes
+  when: luks_discard_present.rc|int == 1
+  notify: "generate grub config"
+
+- name: run dracut
+  shell: dracut -f
+  when: crypttab.changed == true or lvm.changed == true
+
+- name: enable fstrim timer
+  systemd:
+    name: fstrim.timer
+    enabled: yes
+
+- name: start fstrim service
+  systemd:
+    name: fstrim.service
+    state: started
+    enabled: yes
