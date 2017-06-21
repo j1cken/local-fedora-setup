@@ -4,8 +4,23 @@
   with_items:
     - docker
 
-- name: enable docker service
-  debug: msg="*****TBD*****"
-  
+- name: check for insecure registry
+  shell: grep insecure-registry /etc/sysconfig/docker
+  register: insecure_registry_present
+  failed_when: "insecure_registry_present == 2"
+  changed_when: false
+
+- name: set insecure registry
+  lineinfile:
+    path: /etc/sysconfig/docker
+    regexp: "^(OPTIONS=.*)'$"
+    line: "\\1 --insecure-registry 172.30.0.0/16'"
+    backrefs: yes
+    backup: yes
+  when: insecure_registry_present.rc|int == 1
+
 - name: start docker service
-  service: name=docker state=restarted
+  systemd:
+    name: docker
+    state: restarted
+    enabled: yes

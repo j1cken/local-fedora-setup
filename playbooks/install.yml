@@ -5,10 +5,10 @@
   roles:
   - basic
   - experimental
-  - docker
+  - { role: docker, tags: ['new'] }
   - nodejs
   - google-cloud-sdk
-  - { role: i3, tags: ['new'] }
+  - { role: i3, tags: [] }
   - { role: trim, tags: [] }
   - { role: blk-mq, tags: [] }
   - { role: ovpn, tags: [] }
