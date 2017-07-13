@@ -34,6 +34,7 @@
     - tcpdump
     - tlp
     - chromium
+    - rxvt-unicode
 
 - name: check for atom packages
   dnf: name=atom state=present
