@@ -35,6 +35,8 @@
     - tlp
     - chromium
     - rxvt-unicode
+    - golang
+    - krb5-workstation
 
 - name: check for atom packages
   dnf: name=atom state=present
