@@ -4,14 +4,16 @@
     - atom_version: 1.18.0
   roles:
   - basic
-  - experimental
-  - { role: docker, tags: [] }
-  - nodejs
-  - google-cloud-sdk
-  - { role: i3, tags: [] }
-  - { role: trim, tags: [] }
-  - { role: blk-mq, tags: [] }
+  - { role: docker, tags: ['tower'] }
+  - { role: i3, tags: ['tower'] }
+  - { role: trim, tags: ['tower'] }
+  - { role: blk-mq, tags: ['tower'] }
   - { role: ovpn, tags: [] }
-  - { role: mmedia, tags: ['new'] }
+  - { role: mmedia, tags: [] }
+  - { role: hw, tags: ['tower'] }
+
 
   # - { role: blk-mq, tags: ['new'] }
+  # - nodejs
+  # - google-cloud-sdk
+
