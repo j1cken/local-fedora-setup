@@ -30,6 +30,10 @@
     line: 'ACTION=="add|change", KERNEL=="sd[a-z]", ATTR{queue/rotational}=="1", ATTR{queue/scheduler}="bfq"'
     backup: yes
 
+
+# include kyber, bfq and udev rules in initramfs - use handler b/c fstrim also requires rebuild of initramfs
+# --force-drivers bfq --force-drivers kyber-iosched --install "/etc/udev/rules.d/60-iosched.rules"
+
 #
 #[torben@tower ~]$ cat /etc/modprobe.d/blacklist.conf 
 #blacklist nouveau
