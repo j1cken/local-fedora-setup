@@ -1,9 +1,0 @@
----
-- name: install rawhide repo
-  dnf: name={{ item }} state=present
-  with_items:
-    - fedora-repos-rawhide
-
-# sudo dracut --add-driver bfq --add-driver kyber-iosched --force initramfs-4.12.0-0.rc0.git7.1.fc27.x86_64.img
-- name: enable kyber i/o scheduler
-  debug: msg="*****TBD*****"
