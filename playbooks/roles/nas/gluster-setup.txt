@@ -21,3 +21,7 @@ sudo mount -t glusterfs 172.16.0.11:/nas-volume /data/nas
 
 # auto client mount
 172.16.0.11:/nas-volume /data/nas glusterfs defaults,_netdev 0 0
+
+# user writable
+sudo gluster volume set nas-volume storage.owner-uid 1000
+sudo gluster volume set nas-volume storage.owner-gid 1000
