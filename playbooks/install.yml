@@ -1,10 +1,10 @@
 - hosts: localhost
   connection: localhost
   vars:
-    - atom_version: 1.18.0
+    - atom_version: 1.21.0
   roles:
   - basic
-  - { role: docker, tags: ['tower'] }
+  - { role: container, tags: ['tower'] }
   - { role: i3, tags: ['tower'] }
   - { role: trim, tags: ['tower'] }
   - { role: blk-mq, tags: ['tower'] }
@@ -12,8 +12,6 @@
   - { role: mmedia, tags: [] }
   - { role: hw, tags: ['tower'] }
 
-
   # - { role: blk-mq, tags: ['new'] }
   # - nodejs
   # - google-cloud-sdk
-

@@ -37,6 +37,7 @@
     - rxvt-unicode
     - golang
     - krb5-workstation
+    - hexchat
 
 - name: check for atom packages
   dnf: name=atom state=present

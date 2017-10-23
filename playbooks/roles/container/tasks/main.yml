@@ -1,4 +1,9 @@
 ---
+#- name: install cri-o packages
+#  dnf: name={{ item }} state=present
+#  with_items:
+#    - cri-o
+
 - name: install docker packages
   dnf: name={{ item }} state=present
   with_items:
