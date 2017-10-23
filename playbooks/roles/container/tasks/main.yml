@@ -4,6 +4,10 @@
 #  with_items:
 #    - cri-o
 
+# TASK [container : set insecure registry]
+# *******************************************************************************************************************
+# fatal: [localhost]: FAILED! => {"changed": false, "failed": true, "msg": "Aborting, target uses selinux but python bindings (libselinux-python) aren't installed!"}
+
 - name: install docker packages
   dnf: name={{ item }} state=present
   with_items:
