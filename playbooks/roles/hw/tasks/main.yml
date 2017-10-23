@@ -30,3 +30,10 @@
     line: 'ACTION=="add|change", KERNEL=="sd[a-z]", ATTR{queue/rotational}=="1", ATTR{queue/scheduler}="bfq"'
     backup: yes
 
+#
+#[torben@tower ~]$ cat /etc/modprobe.d/blacklist.conf 
+#blacklist nouveau
+#[torben@tower ~]$ grep nouveau /etc/sysconfig/grub
+#GRUB_CMDLINE_LINUX="rd.lvm.lv=fedora00/swap rhgb quiet rd.driver.blacklist=nouveau scsi_mod.use_blk_mq=1 #rd.luks.options=discard"
+#[torben@tower ~]$ 
+
