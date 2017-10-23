@@ -11,6 +11,8 @@
   - { role: ovpn, tags: [] }
   - { role: mmedia, tags: [] }
   - { role: hw, tags: ['tower'] }
+  - { role: nas, tags: ['tower'] }
+  - { role: glusterfs-client, tags: ['tower','selected'] }
 
   # - { role: blk-mq, tags: ['new'] }
   # - nodejs
