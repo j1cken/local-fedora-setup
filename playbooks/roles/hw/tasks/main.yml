@@ -1,22 +1,31 @@
 ---
+- name: create swappiness file if not exists
+  file:
+    path: /etc/sysctl.d/60-swappiness.conf
+    state: touch
+
 - name: set swappiness
   lineinfile:
     path: /etc/sysctl.d/60-swappiness.conf
-    backrefs: no
     regexp: '^vm.swappiness='
     line: 'vm.swappiness=1'
     backup: yes
 
-- name: set kyber io scheduler for SSD
+- name: create scheduler file if not exists
+  file:
     path: /etc/udev/rules.d/60-iosched.rules
-    backrefs: no
+    state: touch
+
+- name: set Kyber I/O scheduler for SSD
+  lineinfile:
+    path: /etc/udev/rules.d/60-iosched.rules
     regexp: '.*="kyber"$'
     line: 'ACTION=="add|change", KERNEL=="sd[a-z]", ATTR{queue/rotational}=="0", ATTR{queue/scheduler}="kyber"'
     backup: yes
 
-- name: set BFQ io scheduler for rotating HDDs
+- name: set BFQ I/O scheduler for rotating HDD
+  lineinfile:
     path: /etc/udev/rules.d/60-iosched.rules
-    backrefs: no
     regexp: '.*="bfq"$'
     line: 'ACTION=="add|change", KERNEL=="sd[a-z]", ATTR{queue/rotational}=="1", ATTR{queue/scheduler}="bfq"'
     backup: yes
