@@ -1,0 +1,23 @@
+---
+- name: set swappiness
+  lineinfile:
+    path: /etc/sysctl.d/60-swappiness.conf
+    backrefs: no
+    regexp: '^vm.swappiness='
+    line: 'vm.swappiness=1'
+    backup: yes
+
+- name: set kyber io scheduler for SSD
+    path: /etc/udev/rules.d/60-iosched.rules
+    backrefs: no
+    regexp: '.*="kyber"$'
+    line: 'ACTION=="add|change", KERNEL=="sd[a-z]", ATTR{queue/rotational}=="0", ATTR{queue/scheduler}="kyber"'
+    backup: yes
+
+- name: set BFQ io scheduler for rotating HDDs
+    path: /etc/udev/rules.d/60-iosched.rules
+    backrefs: no
+    regexp: '.*="bfq"$'
+    line: 'ACTION=="add|change", KERNEL=="sd[a-z]", ATTR{queue/rotational}=="1", ATTR{queue/scheduler}="bfq"'
+    backup: yes
+
