@@ -1,0 +1,23 @@
+sudo gluster volume create nas-volume replica 2 transport tcp 172.16.0.11:/data/disk11/nas 172.16.0.11:/data/disk31/nas 172.16.0.11:/data/disk12/nas 172.16.0.11:/data/disk32/nas 172.16.0.11:/data/disk21/nas 172.16.0.11:/data/disk41/nas 172.16.0.11:/data/disk22/nas 172.16.0.11:/data/disk42/nas force
+
+# use force due to
+# volume create: nas-volume: failed: Multiple bricks of a replicate volume are present on the same server. This setup is not optimal. Use 'force' at the end of the command if you want to override this behavior.
+
+sudo gluster volume start nas-volume
+sudo gluster volume info
+
+# setup server mount
+sudo bash -c 'echo "/dev/sdc1 /data/disk11 xfs defaults 1 2" >>/etc/fstab'
+sudo bash -c 'echo "/dev/sdc2 /data/disk12 xfs defaults 1 2" >>/etc/fstab'
+sudo bash -c 'echo "/dev/sdd1 /data/disk21 xfs defaults 1 2" >>/etc/fstab'
+sudo bash -c 'echo "/dev/sdd2 /data/disk22 xfs defaults 1 2" >>/etc/fstab'
+sudo bash -c 'echo "/dev/sde1 /data/disk31 xfs defaults 1 2" >>/etc/fstab'
+sudo bash -c 'echo "/dev/sde2 /data/disk32 xfs defaults 1 2" >>/etc/fstab'
+sudo bash -c 'echo "/dev/sdf1 /data/disk41 xfs defaults 1 2" >>/etc/fstab'
+sudo bash -c 'echo "/dev/sdf2 /data/disk42 xfs defaults 1 2" >>/etc/fstab'
+
+# client mount
+sudo mount -t glusterfs 172.16.0.11:/nas-volume /data/nas
+
+# auto client mount
+172.16.0.11:/nas-volume /data/nas glusterfs defaults,_netdev 0 0
