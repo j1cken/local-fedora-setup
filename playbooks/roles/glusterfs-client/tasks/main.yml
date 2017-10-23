@@ -1,5 +1,5 @@
 ---
-- name: install basic glusterfs client packages
+- name: install glusterfs client packages
   dnf: name={{ item }} state=present
   with_items:
     - openssh-server
@@ -9,32 +9,4 @@
     #- openib
     - libibverbs
     - python-firewall
-
-- name: open glusterfs client tcp firewall ports
-  firewalld:
-    permanent: yes
-    immediate: yes
-    port: 24007-24008/tcp
-    state: enabled
-
-- name: open glusterfs client udp firewall ports
-  firewalld:
-    permanent: yes
-    immediate: yes
-    port: 24007-24008/udp
-    state: enabled
-
-- name: open brick tcp firewall ports
-  firewalld:
-    permanent: yes
-    immediate: yes
-    port: 49152-49159/tcp
-    state: enabled
-
-- name: open brick udp firewall ports
-  firewalld:
-    permanent: yes
-    immediate: yes
-    port: 49152-49159/udp
-    state: enabled
 
