@@ -4,6 +4,10 @@ sudo gluster volume create nas-volume replica 2 transport tcp 172.16.0.11:/data/
 # volume create: nas-volume: failed: Multiple bricks of a replicate volume are present on the same server. This setup is not optimal. Use 'force' at the end of the command if you want to override this behavior.
 
 sudo gluster volume start nas-volume
+
+# performance
+
+
 sudo gluster volume info
 
 # setup server mount
@@ -18,6 +22,8 @@ sudo bash -c 'echo "/dev/sdf2 /data/disk42 xfs defaults 1 2" >>/etc/fstab'
 
 # client mount
 sudo mount -t glusterfs 172.16.0.11:/nas-volume /data/nas
+# remote client mount
+sudo mount -t glusterfs -o direct-io-mode=false 172.16.0.11:/nas-volume /data/nas
 
 # auto client mount
 172.16.0.11:/nas-volume /data/nas glusterfs defaults,_netdev 0 0
@@ -25,3 +31,4 @@ sudo mount -t glusterfs 172.16.0.11:/nas-volume /data/nas
 # user writable
 sudo gluster volume set nas-volume storage.owner-uid 1000
 sudo gluster volume set nas-volume storage.owner-gid 1000
+
