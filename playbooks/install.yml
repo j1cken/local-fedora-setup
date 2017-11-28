@@ -12,7 +12,8 @@
   - { role: mmedia, tags: [] }
   - { role: hw, tags: ['tower'] }
   - { role: nas, tags: ['tower'] }
-  - { role: glusterfs-client, tags: ['tower','selected'] }
+  - { role: glusterfs-client, tags: ['tower'] }
+  - { role: nested-kvm, tags: ['selected'] }
 
   # - { role: blk-mq, tags: ['new'] }
   # - nodejs
