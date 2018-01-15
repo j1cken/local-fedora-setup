@@ -1,0 +1,6 @@
+---
+- name: add guests to in-memory inventory
+  add_host:
+    name: "{{item.name}}"
+  with_nested: "{{guests}}"
+...

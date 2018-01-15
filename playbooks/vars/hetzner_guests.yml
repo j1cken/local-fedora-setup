@@ -1,0 +1,122 @@
+---
+guests:
+- name: lb
+  install_loc: h1
+  cpu: 2
+  cpuset: 0,1
+  mem: 2048
+  virt_type: kvm
+  virt_hypervisor: paravirt
+  network: bridge=virbr0
+  os_type: linux
+  os_variant: rhel7.4
+  disk_os_size: 20g
+
+- name: master1
+  install_loc: h1
+  cpu: 2
+  cpuset: 0,1
+  mem: 4096
+  virt_type: kvm
+  virt_hypervisor: paravirt
+  network: bridge=virbr0
+  os_type: linux
+  os_variant: rhel7.4
+  disk_os_size: 50g
+
+- name: master2
+  install_loc: h1
+  cpu: 2
+  cpuset: 2,3
+  mem: 4096
+  virt_type: kvm
+  virt_hypervisor: paravirt
+  network: bridge=virbr0
+  os_type: linux
+  os_variant: rhel7.4
+  disk_os_size: 50g
+
+- name: master3
+  install_loc: h2
+  cpu: 2
+  cpuset: 0,1
+  mem: 4096
+  virt_type: kvm
+  virt_hypervisor: paravirt
+  network: bridge=virbr0
+  os_type: linux
+  os_variant: rhel7.4
+  disk_os_size: 50g
+
+- name: infra1
+  install_loc: h1
+  cpu: 4
+  cpuset: 0-3
+  mem: 16384
+  virt_type: kvm
+  virt_hypervisor: paravirt
+  network: bridge=virbr0
+  os_type: linux
+  os_variant: rhel7.4
+  disk_os_size: 50g
+
+- name: infra2
+  install_loc: h1
+  cpu: 4
+  cpuset: 0-3
+  mem: 16384
+  virt_type: kvm
+  virt_hypervisor: paravirt
+  network: bridge=virbr0
+  os_type: linux
+  os_variant: rhel7.4
+  disk_os_size: 50g
+
+- name: infra3
+  install_loc: h2
+  cpu: 4
+  cpuset: 0-3
+  mem: 16384
+  virt_type: kvm
+  virt_hypervisor: paravirt
+  network: bridge=virbr0
+  os_type: linux
+  os_variant: rhel7.4
+  disk_os_size: 50g
+
+- name: app1
+  install_loc: h1
+  cpu: 4
+  cpuset: 4-7
+  mem: 18432
+  virt_type: kvm
+  virt_hypervisor: paravirt
+  network: bridge=virbr0
+  os_type: linux
+  os_variant: rhel7.4
+  disk_os_size: 100g
+
+- name: app2
+  install_loc: h2
+  cpu: 4
+  cpuset: 4-7
+  mem: 12288
+  virt_type: kvm
+  virt_hypervisor: paravirt
+  network: bridge=virbr0
+  os_type: linux
+  os_variant: rhel7.4
+  disk_os_size: 100g
+
+- name: app3
+  install_loc: h2
+  cpu: 4
+  cpuset: 4-7
+  mem: 12288
+  virt_type: kvm
+  virt_hypervisor: paravirt
+  network: bridge=virbr0
+  os_type: linux
+  os_variant: rhel7.4
+  disk_os_size: 100g
+...

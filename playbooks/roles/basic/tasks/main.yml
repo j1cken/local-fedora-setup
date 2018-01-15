@@ -38,6 +38,7 @@
     - golang
     - krb5-workstation
     - hexchat
+    - minicom
 
 - name: check for atom packages
   dnf: name=atom state=present

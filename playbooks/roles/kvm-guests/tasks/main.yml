@@ -1,0 +1,142 @@
+---
+- name: check if RHEL image exists
+  stat:
+    path: /root/{{rhel_image}}
+  register: rhel_img_exists
+
+- name: fail if RHEL image does not exist
+  fail:
+    msg: "Please provide appropriate RHEL image in qcow2 format at /root/{{rhel_image}}"
+  when: rhel_img_exists.stat.exists == False
+
+- name: Ensure RHEL image is in correct place
+  copy:
+    remote_src: yes
+    src: /root/{{rhel_image}}
+    dest: /var/lib/libvirt/images/{{rhel_image}}
+
+- name: check if SSH key exists
+  stat:
+    path: /root/.ssh/id_rsa
+  register: ssh_key_exists
+
+- name: create SSH key
+  command: "ssh-keygen -N '' -f /root/.ssh/id_rsa"
+  when: ssh_key_exists.stat.exists == False
+
+- name: get list of vms
+  virt:
+   command: list_vms
+  register: virt_vms
+
+- name: create dirs for userdata
+  file:
+    path: "/tmp/{{item.name}}"
+    state: directory
+    owner: root
+    group: root
+    mode: '0700'
+  when: # list is equal to logical and
+    - item.name not in virt_vms.list_vms
+    - my_name == item.install_loc
+  with_items: "{{ guests }}"
+
+- name: read in SSH public key
+  slurp:
+    src: /root/.ssh/id_rsa.pub
+  register: ssh_pub_key
+
+- name: create user-data files
+  template:
+    src: user-data.j2
+    dest: "/tmp/{{item.name}}/user-data"
+    owner: root
+    group: root
+    mode: '0600'
+  when: item.name not in virt_vms.list_vms and my_name == item.install_loc
+  with_items: "{{ guests }}"
+
+- name: create meta-data files
+  template:
+    src: meta-data.j2
+    dest: "/tmp/{{ item.name }}/meta-data"
+    owner: root
+    group: root
+    mode: '0600'
+  when: item.name not in virt_vms.list_vms and my_name == item.install_loc
+  with_items: "{{ guests }}"
+
+- name: create cloud-init isos for kvm guests
+  command: /usr/bin/genisoimage -o "/var/lib/libvirt/images/cloud-init-{{item.name}}.iso" -V cidata -r -J meta-data user-data
+  args:
+    chdir: "/tmp/{{item.name}}"
+    creates: "/var/lib/libvirt/images/cloud-init-{{item.name}}.iso"
+  when: item.name not in virt_vms.list_vms and my_name == item.install_loc
+  with_items: "{{guests}}"
+
+- name: create lvols for kvm guests
+  lvol:
+    vg: "{{volume_group}}"
+    lv: "{{item.name}}"
+    size: "{{item.disk_os_size}}"
+  when: item.name not in virt_vms.list_vms and my_name == item.install_loc
+  with_items: "{{guests}}"
+
+- name: install rhel for VMs
+  command: qemu-img convert -O raw "/var/lib/libvirt/images/{{rhel_image}}" "/dev/vg0/{{item.name}}"
+  when: item.name not in virt_vms.list_vms and my_name == item.install_loc
+  with_items: "{{guests}}"
+
+- name: create vm
+  command: "virt-install --name {{item.name}}
+           --connect qemu:///system
+           --arch x86_64
+           --ram {{item.mem}}
+           --vcpus {{item.cpu}}
+           --cpuset {{item.cpuset}}
+           --cpu host
+           --os-type {{item.os_type}}
+           --os-variant {{item.os_variant}}
+           --network {{item.network}}
+           --disk /dev/{{volume_group}}/{{item.name}},device=disk,format=raw
+           --disk /var/lib/libvirt/images/cloud-init-{{item.name}}.iso,device=cdrom
+           --noautoconsole
+           --autostart"
+  when: item.name not in virt_vms.list_vms and my_name == item.install_loc
+  with_items: "{{guests}}"
+
+- name: create CNS devices
+  lvol:
+    vg: "{{volume_group}}"
+    lv: "{{item.name}}"
+    size: "{{cns_device_size}}"
+  when: my_name == item.install_loc
+  with_items:
+    - { name: 'cns1', install_loc: 'h1' }
+    - { name: 'cns2', install_loc: 'h2' }
+    - { name: 'cns3', install_loc: 'h2' }
+
+- name: add CNS device 1 to application node 1
+  command: "virsh attach-disk {{item}} /dev/{{volume_group}}/cns1 vdb --targetbus virtio"
+  when: my_name == "h1"
+  with_items:
+  - app1
+
+- name: add CNS device 2 to application node 2
+  command: "virsh attach-disk {{item}} /dev/{{volume_group}}/cns2 vdb --targetbus virtio"
+  when: my_name == "h2"
+  with_items:
+  - app2
+
+- name: add CNS device 3 to application node 3
+  command: "virsh attach-disk {{item}} /dev/{{volume_group}}/cns3 vdb --targetbus virtio"
+  when: my_name == "h2"
+  with_items:
+  - app3
+
+# - name: start virtual machines
+#   virt:
+#     name: "{{ item.name }}"
+#     state: running
+#   with_items: "{{guests}}"
+...

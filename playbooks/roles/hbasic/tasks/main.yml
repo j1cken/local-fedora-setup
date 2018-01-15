@@ -1,0 +1,142 @@
+---
+- name: update installed packages
+  yum:
+    name: "*"
+    state: latest
+
+- name: install basic packages
+  yum: name={{ item }} state=present
+  with_items:
+    - tuned
+    - virt-install
+    - libvirt-client
+    - genisoimage
+    - libguestfs-tools
+    - libguestfs-bash-completion
+    - libvirt-daemon-config-network
+    - xauth
+    - virt-manager
+    - dejavu-lgc-sans-fonts
+    - NetworkManager
+    - NetworkManager-glib
+    - nm-connection-editor.x86_64
+    - libsemanage-python
+    - policycoreutils-python
+    - python-lxml
+    - iptables-services
+
+- name: install Virtualization group
+  yum:
+    name: "@Virtualization"
+    state: present
+
+- name: define NetworkManager config directory
+  set_fact:
+    etc_nm: "/etc/NetworkManager"
+    etc_dnsm: "/etc/dnsmasq.d"
+
+- name: ensure NetworkManager conf.d directory exists
+  file:
+    path: "{{ etc_nm }}/conf.d"
+    state: directory
+    mode: 0755
+
+- name: ensure dnsmasq conf directory exists
+  file:
+    path: "{{ etc_dnsm }}"
+    state: directory
+    mode: 0755
+
+- name: provision dnsmasq config for NetworkManager
+  copy:
+    src: files/localdns.conf
+    dest: "{{ etc_nm }}/conf.d/localdns.conf"
+  changed_when: true
+  notify: "restart_nm"
+
+- name: ensure NetworkManager dnsmasq.d directory exists
+  file:
+    path: "{{ etc_nm }}/dnsmasq.d"
+    state: directory
+    mode: 0755
+
+- name: provide upstream dns server
+  template:
+    src: upstream.servers
+    dest: "{{ etc_dnsm }}/upstream.servers"
+  changed_when: true
+  # notify: "restart_nm"
+
+- name: configure dns server for libvirt domain in NM controlled dnsmasq
+  copy:
+    src: files/libvirt_dnsmasq.conf
+    dest: "{{ etc_nm }}/dnsmasq.d/libvirt_dnsmasq.conf"
+  changed_when: true
+  # notify: "restart_nm"
+
+- name: provide dns tunings
+  copy:
+    src: files/dns-tunings.conf
+    dest: "{{ etc_nm }}/dnsmasq.d/dns-tunings.conf"
+  changed_when: true
+  # notify: "restart_nm"
+
+- name: configure upstream dns server for NM controlled dnsmasq
+  template:
+    src: files/nm_upstream_file.conf
+    dest: "{{ etc_nm }}/dnsmasq.d/nm_upstream_file.conf"
+  changed_when: true
+  # notify: "restart_nm"
+
+# - name: set resolver to local dnsmasq (127.0.0.1)
+#   nmcli:
+#     conn_name: enp6s0
+#     type: ethernet
+#     dns4:
+#       - 127.0.0.1
+#     state: present
+#   notify: "restart_nm"
+
+- name: install iptables ruleset
+  template:
+    src: templates/iptables
+    dest: /etc/sysconfig/iptables
+  changed_when: true
+  notify: reload_iptables
+
+- name: destroy old default network
+  virt_net:
+    command: destroy
+    name: default
+  ignore_errors: yes
+
+- name: undefine old default network
+  virt_net:
+    command: undefine
+    name: default
+  ignore_errors: yes
+
+- name: define new default network
+  virt_net:
+    command: define
+    name: default
+    xml: '{{ lookup("template", "templates/virsh.net.default.xml") }}'
+
+- name: set autostart for new default network
+  virt_net:
+    name: default
+    autostart: yes
+
+- name: create new default network
+  virt_net:
+    command: create
+    name: default
+
+- name: enable and restart libvirtd
+  systemd:
+    name: libvirtd
+    state: restarted
+    enabled: True
+
+- name: use virtual host tuned profile
+  shell: tuned-adm profile virtual-host

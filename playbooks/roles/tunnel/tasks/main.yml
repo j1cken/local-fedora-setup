@@ -1,0 +1,32 @@
+---
+- name: load ipip kernel module
+  modprobe:
+    name: ipip
+    state: present
+
+# - name: delete existing tunnel
+#   shell: ip tun del tun0
+#   ignore_errors: yes
+#
+# - name: create tunnel
+#   shell: ip tun add tun0 mode ipip local {{ public_ip }} remote {{ remote_endpoint }} ttl 64 dev enp6s0
+#
+# - name: set tunnel ip address
+#   shell: ip a add dev tun0 {{ tun_ifaddr }}
+#
+# - name: start tunnel interface
+#   shell: ip l set dev tun0 up mtu 1500
+#
+# - name: add device route
+#   shell: ip r add 192.168.{{ remote_subnet }}.0/24 dev tun0
+
+- name: provision IPIP tunnel
+  template:
+    src: ifcfg-tun0
+    dest: /etc/sysconfig/network-scripts/ifcfg-tun0
+
+- name: provision IPIP tunnel route
+  template:
+    src: route-tun0
+    dest: /etc/sysconfig/network-scripts/route-tun0
+...

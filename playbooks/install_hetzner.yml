@@ -1,0 +1,24 @@
+---
+- hosts: hetzner
+  gather_facts: no
+  vars_files:
+  - vars/hetzner_guests.yml
+  roles:
+  - { role: hbasic }
+  - { role: tunnel }
+  # - { role: kvm-guests }
+...
+
+# - hosts: h1
+#   gather_facts: no
+#   vars:
+#     my_name: h1
+#   roles:
+#   - { role: hbasic }
+#
+# - hosts: h2
+#   gather_facts: no
+#   vars:
+#     my_name: h2
+#   roles:
+#   - { role: hbasic }

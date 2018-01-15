@@ -1,0 +1,18 @@
+---
+- name: restart NetworkManager
+  systemd:
+    state: restarted
+    daemon_reload: yes
+    name: NetworkManager
+    enabled: yes
+  listen: "restart_nm"
+
+- name: reload iptables
+  # shell: iptables-restore </etc/sysconfig/iptables
+  systemd:
+    state: restarted
+    daemon_reload: yes
+    name: iptables
+    enabled: yes
+  listen: reload_iptables
+...

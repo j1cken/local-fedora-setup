@@ -1,0 +1,10 @@
+---
+my_name: h1
+domain: openshift.cloud
+subnet: 122
+remote_subnet: 123
+mac: 52:54:00:a4:97:69
+public_ip: 46.4.89.103
+remote_endpoint: 178.63.46.151
+tun_ifaddr: 10.0.1.1
+remote_tun_ifaddr: 10.0.2.1

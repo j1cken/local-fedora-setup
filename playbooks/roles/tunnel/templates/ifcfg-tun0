@@ -1,0 +1,9 @@
+DEVICE=tun0
+TYPE=IPIP
+MY_OUTER_IPADDR={{ public_ip }}
+PEER_OUTER_IPADDR={{ remote_endpoint }}
+MY_INNER_IPADDR={{ tun_ifaddr }}/16
+PEER_INNER_IPADDR={{ remote_tun_ifaddr }}
+ONBOOT=yes
+MTU=1500
+TTL=64

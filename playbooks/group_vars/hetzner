@@ -1,0 +1,7 @@
+---
+rhel_image: rhel74.qcow2
+volume_group: vg0
+default_password: password
+remote_user: cloud-user
+cns_device_size: 300g
+...
