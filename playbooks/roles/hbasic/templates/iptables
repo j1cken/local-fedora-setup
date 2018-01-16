@@ -27,9 +27,12 @@ COMMIT
 :FORWARD DROP [54:2480]
 :OUTPUT ACCEPT [326950:120549489]
 -A INPUT -i lo -j ACCEPT
+#icmp
+-A INPUT -i enp6s0 -p icmp --icmp-type echo-request -d {{ public_ip }} -j ACCEPT
 -A INPUT -i enp6s0 -p 4 -s {{ remote_endpoint }} -d {{ public_ip }} -j ACCEPT
 -A INPUT -p tcp -m tcp --dport 22 -m state --state NEW,ESTABLISHED -j ACCEPT
 -A INPUT -i enp6s0 -p tcp -m tcp --sport 18080 -j ACCEPT
+-A INPUT -i enp6s0 -p tcp -m tcp --dport 18080 -j ACCEPT
 -A INPUT -i enp6s0 -p udp -m udp -s 213.133.98.98,213.133.99.99,213.133.100.100 --sport 53 -j ACCEPT
 -A INPUT -i tun0 -s 192.168.{{ remote_subnet }}.0/24 -d {{ tun_ifaddr }} -j ACCEPT
 -A INPUT -i tun0 -p udp -m udp --dport 53 -j ACCEPT
@@ -51,7 +54,9 @@ COMMIT
 -A FORWARD -j LOG --log-prefix "FWD:DROP:" --log-level 6
 -A FORWARD -j DROP
 -A OUTPUT -o lo -j ACCEPT
+-A OUTPUT -o enp6s0 -p icmp --icmp-type echo-reply -s {{ public_ip }} -j ACCEPT
 -A OUTPUT -o enp6s0 -p 4 -d {{ remote_endpoint }} -s {{ public_ip }} -j ACCEPT
+-A OUTPUT -o enp6s0 -p tcp -s {{ public_ip }} --dport 18080 -j ACCEPT
 -A OUTPUT -o virbr0 -p udp -m udp --dport 68 -j ACCEPT
 #-A OUTPUT -j LOG --log-prefix "OUT:DROP:" --log-level 6
 #-A OUTPUT -j DROP
