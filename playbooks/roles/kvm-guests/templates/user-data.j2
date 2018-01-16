@@ -1,9 +1,5 @@
 #cloud-config
 ssh_authorized_keys:
-  - "{{ ssh_pub_key['content'] | b64decode }}"
-chpasswd:
-  list: |
-     root:{{default_password}}
-     cloud-user:{{default_password}}
-  expire: True
+  - "{{ ssh_pub_key1 }}"
+  - "{{ ssh_pub_key2 }}"
 timezone: Europe/Berlin
