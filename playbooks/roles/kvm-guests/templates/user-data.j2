@@ -1,5 +1,7 @@
 #cloud-config
+users:
+  - default
 ssh_authorized_keys:
-  - "{{ ssh_pub_key1 }}"
-  - "{{ ssh_pub_key2 }}"
+  - {{ ssh_pub_key1 }}
+  - {{ ssh_pub_key2 }}
 timezone: Europe/Berlin
