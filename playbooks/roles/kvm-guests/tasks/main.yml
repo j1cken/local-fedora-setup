@@ -39,7 +39,6 @@
     group: root
     mode: '0700'
   when: # list is equal to logical and
-    - item.name not in virt_vms.list_vms
     - my_name == item.install_loc
   with_items: "{{ guests }}"
   tags:
@@ -62,8 +61,8 @@
   set_fact:
     ssh_pub_key1: "{{ lookup('file', '/tmp/rsa.pub-h1') }}"
     ssh_pub_key2: "{{ lookup('file', '/tmp/rsa.pub-h2') }}"
-    tags:
-      - user_auth
+  tags:
+    - user_auth
 
 - name: create user-data files
   template:
@@ -72,7 +71,7 @@
     owner: root
     group: root
     mode: '0600'
-  when: item.name not in virt_vms.list_vms and my_name == item.install_loc
+  when: my_name == item.install_loc
   with_items: "{{ guests }}"
   tags:
     - user_auth
@@ -84,7 +83,7 @@
     owner: root
     group: root
     mode: '0600'
-  when: item.name not in virt_vms.list_vms and my_name == item.install_loc
+  when: my_name == item.install_loc
   with_items: "{{ guests }}"
   tags:
     - user_auth
@@ -94,7 +93,7 @@
   args:
     chdir: "/tmp/{{item.name}}"
     creates: "/var/lib/libvirt/images/cloud-init-{{item.name}}.iso"
-  when: item.name not in virt_vms.list_vms and my_name == item.install_loc
+  when: my_name == item.install_loc
   with_items: "{{guests}}"
   tags:
     - user_auth
@@ -159,9 +158,12 @@
   with_items:
   - app3
 
-# - name: start virtual machines
-#   virt:
-#     name: "{{ item.name }}"
-#     state: running
-#   with_items: "{{guests}}"
+- name: start virtual machines
+  virt:
+    name: "{{ item.name }}"
+    state: running
+  when: my_name == item.install_loc
+  with_items: "{{guests}}"
+  tags:
+    - start_vms
 ...
