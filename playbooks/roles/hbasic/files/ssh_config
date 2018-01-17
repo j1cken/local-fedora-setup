@@ -1,0 +1,8 @@
+Host *.openshift.cloud
+  User cloud-user
+Host *.openshift2.cloud
+  User cloud-user
+Host 192.168.122.*
+  User cloud-user
+Host 192.168.123.*
+  User cloud-user

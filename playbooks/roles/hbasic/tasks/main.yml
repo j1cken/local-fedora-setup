@@ -47,6 +47,17 @@
     state: directory
     mode: 0755
 
+- name: ensure user ssh config directory exists
+  file:
+    path: "/root/.ssh"
+    state: directory
+    mode: 0700
+
+- name: configure ssh client
+  copy:
+    src: ssh_config
+    dest: "/root/.ssh/config"
+
 # - name: provision dnsmasq config for NetworkManager
 #   copy:
 #     src: files/localdns.conf
