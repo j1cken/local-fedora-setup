@@ -24,16 +24,18 @@
     - policycoreutils-python
     - python-lxml
     - iptables-services
+    - fail2ban # needs epel
 
 - name: install Virtualization group
   yum:
     name: "@Virtualization"
     state: present
 
-# - name: define NetworkManager config directory
-#   set_fact:
-#     etc_nm: "/etc/NetworkManager"
-#     etc_dnsm: "/etc/dnsmasq.d"
+- name: define config directories
+  set_fact:
+    etc_nm: "/etc/NetworkManager"
+    etc_dnsm: "/etc/dnsmasq.d"
+    etc_f2b: "/etc/fail2ban"
 #
 # - name: ensure NetworkManager conf.d directory exists
 #   file:
@@ -57,6 +59,19 @@
   copy:
     src: ssh_config
     dest: "/root/.ssh/config"
+
+- name: ensure fail2ban config directory exists
+  file:
+  path: "{{ etc_f2b }}/jail.d"
+  state: directory
+  mode: 0755
+
+- name: configure fail2ban for ssh
+  copy:
+    src: 01-ssh.conf
+    dest: "{{ etc_f2b }}/jail.d/01-ssh.conf"
+  changed_when: true
+  notify: restart_fail2ban
 
 # - name: provision dnsmasq config for NetworkManager
 #   copy:

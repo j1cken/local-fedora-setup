@@ -23,4 +23,12 @@
     name: dnsmasq
     enabled: yes
   listen: restart_dnsmasq
+
+- name: restart fail2ban
+  systemd:
+    state: restarted
+    daemon_reload: yes
+    name: fail2ban
+    enabled: yes
+  listen: restart_fail2ban
 ...
