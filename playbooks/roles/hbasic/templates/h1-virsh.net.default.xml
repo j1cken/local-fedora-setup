@@ -1,0 +1,27 @@
+<network>
+  <name>default</name>
+  <uuid>d9499bb7-7dca-4564-a4cb-c9b12537e5ec</uuid>
+  <forward mode='nat'>
+    <nat>
+      <port start='1024' end='65535'/>
+    </nat>
+  </forward>
+  <bridge name='virbr0' stp='on' delay='0'/>
+  <mac address='52:54:00:a4:97:69'/>
+  <domain name='openshift.cloud' localOnly='yes'/>
+  <dns>
+    <host ip='192.168.122.110'>
+      <hostname>console</hostname>
+    </host>
+  </dns>
+  <ip address='192.168.122.1' netmask='255.255.255.0'>
+    <dhcp>
+      <range start='192.168.122.3' end='192.168.122.254'/>
+      <host mac='52:54:00:22:69:77' name='lb' ip='192.168.122.110'/>
+      <host mac='52:54:00:db:50:ce' name='master1' ip='192.168.122.174'/>
+      <host mac='52:54:00:1f:a4:13' name='master2' ip='192.168.122.71'/>
+      <host mac='52:54:00:af:1a:8b' name='infra1' ip='192.168.122.125'/>
+      <host mac='52:54:00:44:d3:e8' name='infra2' ip='192.168.122.154'/>
+    </dhcp>
+  </ip>
+</network>
