@@ -23,6 +23,7 @@
       <host mac='52:54:00:1f:a4:13' name='master2' ip='192.168.122.71'/>
       <host mac='52:54:00:af:1a:8b' name='infra1' ip='192.168.122.125'/>
       <host mac='52:54:00:44:d3:e8' name='infra2' ip='192.168.122.154'/>
+      <host mac='52:54:00:29:68:f4' name='app1' ip='192.168.122.218'/>
     </dhcp>
   </ip>
 </network>

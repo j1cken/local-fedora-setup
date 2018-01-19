@@ -19,7 +19,9 @@
     <dhcp>
       <range start='192.168.123.3' end='192.168.123.254'/>
       <host mac='52:54:00:0d:09:eb' name='master3' ip='192.168.123.12'/>
-      <host mac='52:54:00:38:ed:1e' name='infra3' ip='192.168.122.242'/>
+      <host mac='52:54:00:38:ed:1e' name='infra3' ip='192.168.123.242'/>
+      <host mac='52:54:00:73:c5:8d' name='app2' ip='192.168.123.28'/>
+      <host mac='52:54:00:5c:57:33' name='app3' ip='192.168.123.5'/>
     </dhcp>
   </ip>
 </network>
