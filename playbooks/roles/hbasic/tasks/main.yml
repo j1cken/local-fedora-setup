@@ -154,11 +154,19 @@
     name: default
   ignore_errors: yes
 
-- name: define new default network
+- name: define new default network on h1
   virt_net:
     command: define
     name: default
-    xml: '{{ lookup("template", "templates/virsh.net.default.xml") }}'
+    xml: '{{ lookup("template", "templates/h1-virsh.net.default.xml") }}'
+  when: my_name == 'h1'
+
+- name: define new default network on h2
+  virt_net:
+    command: define
+    name: default
+    xml: '{{ lookup("template", "templates/h2-virsh.net.default.xml") }}'
+  when: my_name == 'h2'
 
 - name: set autostart for new default network
   virt_net:
