@@ -141,19 +141,19 @@
     - { name: 'cns3', install_loc: 'h2' }
 
 - name: add CNS device 1 to application node 1
-  command: "virsh attach-disk {{item}} /dev/{{volume_group}}/cns1 vdb --targetbus virtio"
+  command: "virsh attach-disk {{item}} /dev/{{volume_group}}/cns1 vdb --targetbus virtio --config"
   when: my_name == "h1"
   with_items:
   - app1
 
 - name: add CNS device 2 to application node 2
-  command: "virsh attach-disk {{item}} /dev/{{volume_group}}/cns2 vdb --targetbus virtio"
+  command: "virsh attach-disk {{item}} /dev/{{volume_group}}/cns2 vdb --targetbus virtio --config"
   when: my_name == "h2"
   with_items:
   - app2
 
 - name: add CNS device 3 to application node 3
-  command: "virsh attach-disk {{item}} /dev/{{volume_group}}/cns3 vdb --targetbus virtio"
+  command: "virsh attach-disk {{item}} /dev/{{volume_group}}/cns3 vdb --targetbus virtio --config"
   when: my_name == "h2"
   with_items:
   - app3
