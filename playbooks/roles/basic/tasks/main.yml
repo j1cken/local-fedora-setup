@@ -26,28 +26,49 @@
     - lm_sensors
     - acpi
     - sysstat
-    - nitrokey-app
+    # - nitrokey-app
     - p7zip
     - powertop
     - lsyncd
     - vim-enhanced
     - tcpdump
     - tlp
-    - chromium
+    # - chromium
     - rxvt-unicode
     - golang
     - krb5-workstation
     - hexchat
     - minicom
 
-- name: check for atom packages
-  dnf: name=atom state=present
-  register: atom_installed
-  ignore_errors: True
+# sudo rpm --import https://packages.microsoft.com/keys/microsoft.asc
+# sudo sh -c 'echo -e "[code]\nname=Visual Studio Code\nbaseurl=https://packages.microsoft.com/yumrepos/vscode\nenabled=1\ngpgcheck=1\ngpgkey=https://packages.microsoft.com/keys/microsoft.asc" > /etc/yum.repos.d/vscode.repo'
+- name: import M$ vscode RPM key
+  rpm_key:
+    state: present
+    key: https://packages.microsoft.com/keys/microsoft.asc
 
-- name: install atom
-  dnf: name=https://github.com/atom/atom/releases/download/v{{atom_version}}/atom.x86_64.rpm state=present
-  when: atom_installed|failed
+- name: create Yum repo definition
+  blockinfile:
+    path: /etc/yum.repos.d/vscode.repo
+    block: |
+      [code]
+      name=Visual Studio Code
+      baseurl=https://packages.microsoft.com/yumrepos/vscode
+      enabled=1
+      gpgcheck=1
+      gpgkey=https://packages.microsoft.com/keys/microsoft.asc
+
+- name: install Visual Studio Code
+  dnf: name=code state=present
+
+# - name: check for atom packages
+#   dnf: name=atom state=present
+#   register: atom_installed
+#   ignore_errors: True
+
+# - name: install atom
+#   dnf: name=https://github.com/atom/atom/releases/download/v{{atom_version}}/atom.x86_64.rpm state=present
+#   when: atom_installed|failed
 
 - name: start basic services
   service: name={{ item }} state=restarted enabled=yes
