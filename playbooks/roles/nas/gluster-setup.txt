@@ -6,7 +6,7 @@ sudo gluster volume create nas-volume replica 2 transport tcp 172.16.0.11:/data/
 sudo gluster volume start nas-volume
 
 # performance
-
+sudo gluster volume set nas-volume performance.cache-size 1GB
 
 sudo gluster volume info
 
