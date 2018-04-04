@@ -1,6 +1,7 @@
 ---
 - name: define config directories
   set_fact:
+    etc_nm: "/etc/NetworkManager/conf.d"
     etc_nm_dnsmasq: "/etc/NetworkManager/dnsmasq.d"
 
 - name: ensure NetworkManager dnsmasq.d directory exists
@@ -8,6 +9,13 @@
     path: "{{ etc_nm_dnsmasq }}"
     state: directory
     mode: 0755
+
+- name: enable dnsmasq for NetworkManager
+  copy:
+    src: nm-dnsmasq.conf
+    dest: "{{ etc_nm }}/dnsmasq.conf"
+  changed_when: true
+  notify: "restart_nm"
 
 - name: provision dnsmasq config for NetworkManager
   copy:
