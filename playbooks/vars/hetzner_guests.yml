@@ -4,7 +4,7 @@ guests:
   install_loc: h1
   cpu: 2
   cpuset: 0,1
-  mem: 2048
+  mem: 4096
   virt_type: kvm
   virt_hypervisor: paravirt
   network: bridge=virbr0
@@ -16,7 +16,7 @@ guests:
   install_loc: h1
   cpu: 2
   cpuset: 0,1
-  mem: 4096
+  mem: 6144
   virt_type: kvm
   virt_hypervisor: paravirt
   network: bridge=virbr0
