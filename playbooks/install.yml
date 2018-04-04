@@ -1,7 +1,10 @@
+---
 - hosts: localhost
   connection: localhost
   vars:
     - atom_version: 1.21.0
+  handlers:
+    - import_tasks: handlers.yml
   roles:
   - { role: basic, tags: ['t450','tower'] }
   - { role: i3, tags: ['t450','tower'] }
@@ -14,7 +17,9 @@
   - { role: ovpn, tags: ['t450'] }
   - { role: mmedia, tags: ['t450'] }
   - { role: google-cloud-sdk, tags: ['t450'] }
-  - { role: minishift, tags: ['minishift'] }
+  - { role: minishift, tags: ['t450', 'minishift'] }
+  - { role: nm, tags: ['t450', 'tower', 'nm'] }
   # - { role: container, tags: ['t450','tower'] }
   # - { role: blk-mq, tags: ['new'] }
   # - nodejs
+...
