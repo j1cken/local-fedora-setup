@@ -1,0 +1,16 @@
+---
+- name: install basic packages
+  dnf: name={{ item }} state=present
+  with_items:
+    - libvirt
+    - qemu-kvm
+
+- name: set docker-machine-driver-kvm release version
+  set_fact: docker_machine_version=v0.10.0
+
+- name: install docker-machine-driver-kvm
+  get_url:
+    url: https://github.com/dhiltgen/docker-machine-kvm/releases/download/{{ docker_machine_version }}/docker-machine-driver-kvm
+    dest: /usr/local/bin/docker-machine-driver-kvm
+    mode: 0775
+...

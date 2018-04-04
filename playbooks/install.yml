@@ -10,10 +10,11 @@
   - { role: hw, tags: ['t450','tower'] }
   - { role: glusterfs-client, tags: ['t450','tower'] }
   - { role: nas, tags: ['tower'] }
-  - { role: nested-kvm, tags: ['selected'] }
+  - { role: nested-kvm, tags: [] }
   - { role: ovpn, tags: ['t450'] }
   - { role: mmedia, tags: ['t450'] }
   - { role: google-cloud-sdk, tags: ['t450'] }
+  - { role: minishift, tags: ['minishift'] }
   # - { role: container, tags: ['t450','tower'] }
   # - { role: blk-mq, tags: ['new'] }
   # - nodejs
