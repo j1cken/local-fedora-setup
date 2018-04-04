@@ -3,18 +3,17 @@
   vars:
     - atom_version: 1.21.0
   roles:
-  - basic
-  - { role: container, tags: ['tower'] }
-  - { role: i3, tags: ['tower'] }
-  - { role: trim, tags: ['tower'] }
-  - { role: blk-mq, tags: ['tower'] }
-  - { role: ovpn, tags: [] }
-  - { role: mmedia, tags: [] }
-  - { role: hw, tags: ['tower'] }
+  - { role: basic, tags: ['t450','tower'] }
+  - { role: i3, tags: ['t450','tower'] }
+  - { role: trim, tags: ['t450','tower'] }
+  - { role: blk-mq, tags: ['t450','tower'] }
+  - { role: hw, tags: ['t450','tower'] }
+  - { role: glusterfs-client, tags: ['t450','tower'] }
   - { role: nas, tags: ['tower'] }
-  - { role: glusterfs-client, tags: ['tower'] }
   - { role: nested-kvm, tags: ['selected'] }
-
+  - { role: ovpn, tags: ['t450'] }
+  - { role: mmedia, tags: ['t450'] }
+  - { role: google-cloud-sdk, tags: ['t450'] }
+  # - { role: container, tags: ['t450','tower'] }
   # - { role: blk-mq, tags: ['new'] }
   # - nodejs
-  # - google-cloud-sdk
