@@ -8,5 +8,5 @@
     - fuse-libs
     #- openib
     - libibverbs
-    - python-firewall
+    - python3-firewall
 
