@@ -47,9 +47,23 @@
     state: present
     key: https://packages.microsoft.com/keys/microsoft.asc
 
+- name: set vscode repo def filepath
+  set_fact: vscode_repo_def=/etc/yum.repos.d/vscode.repo
+
+- name: Check that vscode repo def file exists
+  stat:
+    path: "{{ vscode_repo_def }}"
+  register: vscode
+
+- name: Create vscode repo def file
+  file:
+    path: "{{ vscode_repo_def }}"
+    state: touch
+  when: vscode.stat.exists == False
+
 - name: create Yum repo definition
   blockinfile:
-    path: /etc/yum.repos.d/vscode.repo
+    path: "{{ vscode_repo_def }}"
     block: |
       [code]
       name=Visual Studio Code
