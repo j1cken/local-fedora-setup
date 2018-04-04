@@ -10,7 +10,8 @@
   <mac address='52:54:00:a4:97:69'/>
   <domain name='openshift.cloud' localOnly='yes'/>
   <dns>
-    <forwarder domain='openshift2.cloud' addr="10.0.2.1"/>
+    <forwarder addr="127.0.0.1"/>
+    <!-- <forwarder domain='openshift2.cloud' addr="10.0.2.1"/> -->
     <host ip='192.168.122.110'>
       <hostname>console</hostname>
     </host>
