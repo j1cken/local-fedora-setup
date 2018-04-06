@@ -5,6 +5,49 @@
     - glusterfs
     - glusterfs-server
 
+- name: enable wake on lan
+  lineinfile:
+    path: /etc/sysconfig/network-scripts/ifcfg-enp6s0
+    regexp: '^ETHTOOL_OPTIONS=.*$'
+    line: 'ETHTOOL_OPTIONS="wol g"'
+    backup: yes
+   
+# [torben@localhost local-fedora-setup]$ cat /mnt/etc/updatedb.conf 
+# ...
+# PRUNEFS = "... fuse.ceph fuse.glusterfs"
+# PRUNENAMES = ...
+# PRUNEPATHS = "/var/lib/ceph /data"
+
+- name: check for glusterfs FS pruning
+  shell: grep fuse.glusterfs /etc/updatedb.conf
+  register: fuse_glusterfs_present
+  failed_when: "fuse_glusterfs_present == 2"
+  changed_when: false
+
+- name: prevent glusterfs in updatedb
+  lineinfile:
+    path: /etc/updatedb.conf
+    backrefs: yes
+    regexp: '^(PRUNEFS\s+=.*)"$'
+    line: '\1 fuse.glusterfs"'
+    backup: yes
+  when: fuse_glusterfs_present.rc|int == 1
+
+- name: check for nas path pruning
+  shell: grep '/data' /etc/updatedb.conf
+  register: nas_path_present
+  failed_when: "nas_path_present == 2"
+  changed_when: false
+
+- name: prevent /data directory in updatedb
+  lineinfile:
+    path: /etc/updatedb.conf
+    backrefs: yes
+    regexp: '^(PRUNEPATHS\s+=.*)"$'
+    line: '\1 /data"'
+    backup: yes
+  when: nas_path_present.rc|int == 1
+
 - name: open glusterfs client tcp firewall ports
   firewalld:
     permanent: yes
@@ -39,11 +82,3 @@
     immediate: yes
     port: 40000/udp
     state: enabled
-
-- name: enable wake on lan
-  lineinfile:
-    path: /etc/sysconfig/network-scripts/ifcfg-enp6s0
-    regexp: '^ETHTOOL_OPTIONS=.*$'
-    line: 'ETHTOOL_OPTIONS="wol g"'
-    backup: yes
-   
