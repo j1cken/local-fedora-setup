@@ -1,12 +1,12 @@
-sudo gluster volume create nas-volume replica 2 transport tcp 172.16.0.11:/data/disk11/nas 172.16.0.11:/data/disk31/nas 172.16.0.11:/data/disk12/nas 172.16.0.11:/data/disk32/nas 172.16.0.11:/data/disk21/nas 172.16.0.11:/data/disk41/nas 172.16.0.11:/data/disk22/nas 172.16.0.11:/data/disk42/nas force
+sudo gluster volume create nas replica 2 transport tcp 172.16.0.11:/data/disk11/nas 172.16.0.11:/data/disk31/nas 172.16.0.11:/data/disk12/nas 172.16.0.11:/data/disk32/nas 172.16.0.11:/data/disk21/nas 172.16.0.11:/data/disk41/nas 172.16.0.11:/data/disk22/nas 172.16.0.11:/data/disk42/nas force
 
 # use force due to
-# volume create: nas-volume: failed: Multiple bricks of a replicate volume are present on the same server. This setup is not optimal. Use 'force' at the end of the command if you want to override this behavior.
+# volume create: nas: failed: Multiple bricks of a replicate volume are present on the same server. This setup is not optimal. Use 'force' at the end of the command if you want to override this behavior.
 
-sudo gluster volume start nas-volume
+sudo gluster volume start nas
 
 # performance
-sudo gluster volume set nas-volume performance.cache-size 1GB
+sudo gluster volume set nas performance.cache-size 4GB
 
 sudo gluster volume info
 
@@ -21,14 +21,29 @@ sudo bash -c 'echo "/dev/sdf1 /data/disk41 xfs defaults 1 2" >>/etc/fstab'
 sudo bash -c 'echo "/dev/sdf2 /data/disk42 xfs defaults 1 2" >>/etc/fstab'
 
 # client mount
-sudo mount -t glusterfs 172.16.0.11:/nas-volume /data/nas
+sudo mount -t glusterfs 172.16.0.11:/nas /data/nas
 # remote client mount
-sudo mount -t glusterfs -o direct-io-mode=false 172.16.0.11:/nas-volume /data/nas
+sudo mount -t glusterfs -o direct-io-mode=false 172.16.0.11:/nas /data/nas
 
 # auto client mount
-172.16.0.11:/nas-volume /data/nas glusterfs defaults,_netdev 0 0
+172.16.0.11:/nas /data/nas glusterfs defaults,_netdev 0 0
 
 # user writable
-sudo gluster volume set nas-volume storage.owner-uid 1000
-sudo gluster volume set nas-volume storage.owner-gid 1000
+sudo gluster volume set nas storage.owner-uid 1000
+sudo gluster volume set nas storage.owner-gid 1000
 
+
+# http://blog.gluster.org/gluster-tiering-and-small-file-performance/
+sudo gluster volume set nas features.cache-invalidation on
+sudo gluster volume set nas features.cache-invalidation-timeout 600
+sudo gluster volume set nas performance.stat-prefetch on
+sudo gluster volume set nas performance.cache-samba-metadata on
+sudo gluster volume set nas performance.cache-invalidation on
+sudo gluster volume set nas performance.md-cache-timeout 600
+sudo gluster volume set nas network.inode-lru-limit 90000
+
+
+
+
+Test
+sudo gluster volume create test-volume replica 2 transport tcp 172.16.0.11:/data/disk11/mytest 172.16.0.11:/data/disk31/mytest

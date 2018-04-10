@@ -5,6 +5,31 @@
     - glusterfs
     - glusterfs-server
 
+# https://docs.gluster.org/en/latest/Administrator%20Guide/Linux%20Kernel%20Tuning/
+
+- name: create sysctl file if not exists
+  file:
+    path: /etc/sysctl.d/70-gluster.conf
+    state: touch
+
+- name: set sysctl vfs_cache_pressure settings
+  lineinfile:
+    path: /etc/sysctl.d/70-gluster.conf
+    regexp: '^vm.vfs_cache_pressure='
+    line: 'vm.vfs_cache_pressure=120'
+    backup: yes
+
+# 1255  sudo bash -c 'echo deadline > /sys/block/sdc/queue/scheduler'
+# 1256  sudo bash -c 'echo deadline > /sys/block/sdd/queue/scheduler'
+# 1257  sudo bash -c 'echo deadline > /sys/block/sde/queue/scheduler'
+# 1258  sudo bash -c 'echo deadline > /sys/block/sdf/queue/scheduler'
+# 1259  grep . /sys/block/sd[cdef]/queue/scheduler
+# 1255  sudo bash -c 'echo 256 > /sys/block/sdc/queue/nr_requests'
+# 1256  sudo bash -c 'echo 256 > /sys/block/sdd/queue/nr_requests'
+# 1257  sudo bash -c 'echo 256 > /sys/block/sde/queue/nr_requests'
+# 1258  sudo bash -c 'echo 256 > /sys/block/sdf/queue/nr_requests'
+# 1259  grep . /sys/block/sd[cdef]/queue/nr_requests
+
 - name: enable wake on lan
   lineinfile:
     path: /etc/sysconfig/network-scripts/ifcfg-enp6s0
