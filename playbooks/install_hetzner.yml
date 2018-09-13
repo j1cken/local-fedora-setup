@@ -4,9 +4,9 @@
   vars_files:
   - vars/hetzner_guests.yml
   roles:
-  - { role: hbasic, tags: ['basic'] }
+  # - { role: hbasic, tags: ['basic'] }
   - { role: tunnel, tags: ['tunnel'] }
-  - { role: kvm-guests, tags: ['vms'] }
+  # - { role: kvm-guests, tags: ['vms'] }
 ...
 
 # - hosts: h1

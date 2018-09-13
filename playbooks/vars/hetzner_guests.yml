@@ -3,7 +3,7 @@ guests:
 - name: lb
   install_loc: h1
   cpu: 2
-  cpuset: 0,1
+  cpuset: 2,6
   mem: 4096
   virt_type: kvm
   virt_hypervisor: paravirt
@@ -14,8 +14,8 @@ guests:
 
 - name: master1
   install_loc: h1
-  cpu: 2
-  cpuset: 0,1
+  cpu: 4
+  cpuset: 0,1,4,5
   mem: 6144
   virt_type: kvm
   virt_hypervisor: paravirt
@@ -26,8 +26,8 @@ guests:
 
 - name: master2
   install_loc: h1
-  cpu: 2
-  cpuset: 2,3
+  cpu: 4
+  cpuset: 2,3,6,7
   mem: 4096
   virt_type: kvm
   virt_hypervisor: paravirt
@@ -38,8 +38,8 @@ guests:
 
 - name: master3
   install_loc: h2
-  cpu: 2
-  cpuset: 0,1
+  cpu: 4
+  cpuset: 0,1,4,5
   mem: 4096
   virt_type: kvm
   virt_hypervisor: paravirt
@@ -51,7 +51,7 @@ guests:
 - name: infra1
   install_loc: h1
   cpu: 4
-  cpuset: 0-3
+  cpuset: 2,3,6,7
   mem: 16384
   virt_type: kvm
   virt_hypervisor: paravirt
@@ -63,8 +63,8 @@ guests:
 - name: infra2
   install_loc: h1
   cpu: 4
-  cpuset: 0-3
-  mem: 16384
+  cpuset: 0,1,4,5
+  mem: 12288
   virt_type: kvm
   virt_hypervisor: paravirt
   network: bridge=virbr0
@@ -75,7 +75,7 @@ guests:
 - name: infra3
   install_loc: h2
   cpu: 4
-  cpuset: 0-3
+  cpuset: 2,3,6,7
   mem: 16384
   virt_type: kvm
   virt_hypervisor: paravirt
@@ -87,8 +87,8 @@ guests:
 - name: app1
   install_loc: h1
   cpu: 4
-  cpuset: 4-7
-  mem: 18432
+  cpuset: 2,3,6,7
+  mem: 14336
   virt_type: kvm
   virt_hypervisor: paravirt
   network: bridge=virbr0
@@ -99,7 +99,7 @@ guests:
 - name: app2
   install_loc: h2
   cpu: 4
-  cpuset: 4-7
+  cpuset: 0,1,4,5
   mem: 12288
   virt_type: kvm
   virt_hypervisor: paravirt
@@ -111,7 +111,7 @@ guests:
 - name: app3
   install_loc: h2
   cpu: 4
-  cpuset: 4-7
+  cpuset: 2,3,6,7
   mem: 12288
   virt_type: kvm
   virt_hypervisor: paravirt
@@ -120,3 +120,12 @@ guests:
   os_variant: rhel7.4
   disk_os_size: 100g
 ...
+
+
+#   <vcpu placement='static'>4</vcpu>
+#  <cputune>
+#    <vcpupin vcpu='0' cpuset='0'/>
+#    <vcpupin vcpu='1' cpuset='1'/>
+#    <vcpupin vcpu='2' cpuset='4'/>
+#    <vcpupin vcpu='3' cpuset='5'/>
+#  </cputune>
