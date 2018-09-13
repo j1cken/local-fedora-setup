@@ -107,3 +107,12 @@
     immediate: yes
     port: 40000/udp
     state: enabled
+
+- name: enable wake on lan
+  lineinfile:
+    path: /etc/sysconfig/network-scripts/ifcfg-enp6s0
+    regexp: '^ETHTOOL_OPTIONS=.*$'
+    line: 'ETHTOOL_OPTIONS="wol g"'
+    backup: yes
+   
+# ensure options max-port 60999
