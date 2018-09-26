@@ -17,7 +17,7 @@
   - { role: ovpn, tags: ['t450'] }
   - { role: mmedia, tags: ['t450'] }
   - { role: google-cloud-sdk, tags: ['t450'] }
-  - { role: minishift, tags: ['t450', 'minishift'] }
+  # - { role: minishift, tags: ['t450', 'minishift'] }
   - { role: nm, tags: ['t450', 'tower', 'nm'] }
   # - { role: container, tags: ['t450','tower'] }
   # - { role: blk-mq, tags: ['new'] }
