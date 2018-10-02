@@ -1,0 +1,27 @@
+---
+- name: install sway packages
+  dnf: name={{ item }} state=present
+  with_items:
+    - sway
+    - i3lock
+    # - python2-psutil
+    # - python2-netifaces
+    # - fontawesome-fonts
+
+    # use bumblebee instead
+    # - i3blocks
+
+- name: deploy dvorak enabled startscript
+  copy:
+    src: sway-dvorak
+    dest: "/usr/local/bin/sway-dvorak"
+
+- name: patch wayland session file
+  lineinfile:
+    path: /usr/share/wayland-sessions/sway.desktop
+    regexp: "^(Exec=)(.*)$"
+    line: "\\1/usr/local/bin/sway-dvorak"
+    backrefs: yes
+    backup: yes
+
+...

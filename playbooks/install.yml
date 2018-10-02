@@ -7,7 +7,8 @@
     - import_tasks: handlers.yml
   roles:
   - { role: basic, tags: ['t450','tower'] }
-  - { role: i3, tags: ['t450','tower'] }
+  # - { role: i3, tags: ['t450','tower'] }
+  - { role: sway, tags: ['t450','tower'] }
   - { role: trim, tags: ['t450','tower'] }
   - { role: blk-mq, tags: ['t450','tower'] }
   - { role: hw, tags: ['t450','tower'] }
