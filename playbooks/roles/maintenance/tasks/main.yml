@@ -1,0 +1,6 @@
+---
+- name: update installed packages
+  dnf:
+    name: "*"
+    state: latest
+...
