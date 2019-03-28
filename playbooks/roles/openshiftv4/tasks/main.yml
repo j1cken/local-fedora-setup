@@ -1,0 +1,143 @@
+---
+# https://github.com/openshift/installer/blob/master/docs/dev/libvirt-howto.md
+
+- name: check kvm
+  stat:
+      path: /dev/kvm
+  register: kvm_enabled
+
+- name: Log a warning
+  debug: 
+    msg: "no KVM enabled"
+    var: kvm_enabled
+  when: kvm_enabled.stat.exists == False
+
+- name: install libvirt
+  dnf: name={{ item }} state=present
+  with_items:
+    - libvirt
+    - libvirt-devel
+    - libvirt-daemon-kvm
+    - qemu-kvm
+    - python3-libvirt
+    - python3-lxml
+  notify: restart-libvirtd
+
+- name: non-root perms for qemu
+  blockinfile:
+    path: /etc/polkit-1/rules.d/80-libvirt.rules
+    create: yes
+    block: |
+      polkit.addRule(function(action, subject) {
+        if (action.id == "org.libvirt.unix.manage" && subject.local && subject.active && subject.isInGroup("wheel")) {
+          return polkit.Result.YES;
+        }
+      });
+
+- name: enable IP Forwarding
+  lineinfile:
+    path: /etc/sysctl.d/99-ipforward.conf
+    create: yes
+    regexp: '^net.ipv4.ip_forward ='
+    line: 'net.ipv4.ip_forward = 1'
+
+- name: enable IP Forwarding in /proc
+  sysctl:
+    name: net.ipv4.ip_forward
+    value: 1
+    sysctl_set: yes
+
+- name: configure libvirtd.conf to accept TCP connections (1)
+  lineinfile:
+    path: /etc/libvirt/libvirtd.conf
+    regexp: '^listen_tls'
+    line: 'listen_tls = 0'
+  notify: restart-libvirtd
+
+- name: configure libvirtd.conf to accept TCP connections (2)
+  lineinfile:
+    path: /etc/libvirt/libvirtd.conf
+    regexp: '^listen_tcp'
+    line: 'listen_tcp = 1'
+  notify: restart-libvirtd
+
+- name: configure libvirtd.conf to accept TCP connections (3)
+  lineinfile:
+    path: /etc/libvirt/libvirtd.conf
+    regexp: '^auth_tcp'
+    line: 'auth_tcp = "none"'
+  notify: restart-libvirtd
+
+- name: configure libvirtd.conf to accept TCP connections (4)
+  lineinfile:
+    path: /etc/libvirt/libvirtd.conf
+    regexp: '^tcp_port'
+    line: 'tcp_port = "16509"'
+  notify: restart-libvirtd
+
+- name: configure service runner to pass --listen arg
+  lineinfile:
+    path: /etc/sysconfig/libvirtd
+    regexp: '^LIBVIRTD_ARGS'
+    line: 'LIBVIRTD_ARGS="--listen"'
+  notify: restart-libvirtd
+
+- debug: msg="restarting libvirt daemon"
+  notify: restart-libvirtd
+  changed_when: true
+
+- name: open listen port in firewall
+  firewalld:
+    port: 16509/tcp
+    permanent: yes
+    state: enabled
+    immediate: yes
+
+# - name: allow libvirt net default thru firewall add-source=192.168.123.0/24
+
+- name: try to list default storage pool
+  virt_pool:
+    name: default
+    command: get_xml
+  register: default_pool
+  ignore_errors: yes
+
+- name: check for default storage pool
+  set_fact: 
+    default_pool_exists: no
+  #debug: msg="{{ default_pool }}"
+  when: "'storage pool default not found' in default_pool.msg"
+  ignore_errors: yes
+
+- set_fact:
+    default_pool_exists: yes
+  when: default_pool_exists is not defined
+
+- name: define default storage pool
+  virt_pool:
+    name: default
+    command: define
+    xml: "{{ lookup('file', 'libvirtd-pool.xml') }}"
+  when: default_pool_exists == False
+
+- name: ensure autostarted default storage pool
+  virt_pool:
+    name: default
+    autostart: yes
+
+- name: tell NM to use dnsmasq
+  blockinfile:
+    path: /etc/NetworkManager/conf.d/dnsmasq.conf
+    create: yes
+    block: |
+      [main]
+      dns=dnsmasq
+
+- name: setup NM DNS overlay
+  lineinfile:
+    path: /etc/NetworkManager/dnsmasq.d/openshiftv4.conf
+    create: yes
+    regexp: '^server='
+    line: 'server=/tt.testing/192.168.123.1'
+  notify: restart-nm
+...
