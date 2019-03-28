@@ -11,10 +11,12 @@
     mode: 0755
 
 - name: enable dnsmasq for NetworkManager
-  copy:
-    src: nm-dnsmasq.conf
-    dest: "{{ etc_nm }}/dnsmasq.conf"
-  changed_when: true
+  blockinfile:
+    path: /etc/NetworkManager/conf.d/dnsmasq.conf
+    create: yes
+    block: |
+      [main]
+      dns=dnsmasq
   notify: "restart_nm"
 
 - name: provision dnsmasq config for NetworkManager
