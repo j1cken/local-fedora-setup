@@ -1,0 +1,6 @@
+---
+- hosts: fischer
+  gather_facts: no
+  roles:
+  - { role: maintenance }
+...
