@@ -36,6 +36,7 @@
     # - chromium
     - rxvt-unicode
     - golang
+    - dep
     - krb5-workstation
     - hexchat
     - minicom
@@ -43,6 +44,14 @@
     - pantheon-files
     - lightdm
     - java-11-openjdk-devel
+    - overpass-fonts
+    - powerline-fonts
+    - bolt
+    - python2-psutils #fuer bumblebee-status
+    - python2-netifaces #fuer bumblebee-status
+
+- name: refresh fonts cache
+  log: sudo fc-cache -fv
 
 # sudo rpm --import https://packages.microsoft.com/keys/microsoft.asc
 # sudo sh -c 'echo -e "[code]\nname=Visual Studio Code\nbaseurl=https://packages.microsoft.com/yumrepos/vscode\nenabled=1\ngpgcheck=1\ngpgkey=https://packages.microsoft.com/keys/microsoft.asc" > /etc/yum.repos.d/vscode.repo'
@@ -103,3 +112,32 @@
   service: name={{ item }} state=started enabled=yes
   with_items:
     - lightdm
+
+- name: enable copr repo for i3-gaps
+  log: sudo dnf copr enable gregw/i3desktop
+
+- name: enable copr repo for polybar
+  log: dnf copr enable tjuberg/i3-desktop
+
+- name: create firewalld rules for Hetzner OpenShift
+  log: create trusted zone
+
+- name: create virsh net default for Hetzner OpenShift
+  log: need DNS info
+
+
+# -rw-r--r--. 1 root root  67 Feb 15 13:56 route-enp0s31f6
+# -rw-r--r--. 1 root root  67 Feb 15 13:57 route-enp12s0u1
+# ╭─torben@localhost /etc/sysconfig/network-scripts  
+# ╰─$ cat route-enp*
+# ADDRESS0=192.168.178.0
+# NETMASK0=255.255.255.0
+# GATEWAY0=172.16.0.1
+# 
+# ADDRESS0=192.168.178.0
+# NETMASK0=255.255.255.0
+# GATEWAY0=172.16.0.1
+# 
+- name: create static route for FritzBox in case of vpn
+  log: sudo ip r add 192.168.178.0/24 via 172.16.0.1
+
