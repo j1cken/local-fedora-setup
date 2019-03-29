@@ -12,3 +12,7 @@ $ sudo dnf install ansible
 ```shell
 $ ansible-playbook -t <tag> playbooks/install.yml
 ```
+or
+```shell
+$ ansible -vv --playbook-dir playbooks/roles/ -m include_role -a name=<role_name> localhost
+```
