@@ -1,54 +1,56 @@
 ---
-- name: update installed packages
-  dnf:
-    name: "*"
-    state: latest
+#- name: update installed packages
+#  dnf:
+#    name: "*"
+#    state: latest
 
-- name: install basic packages
-  dnf: name={{ item }} state=present
-  with_items:
-    - zsh
-    - git
-    - keepassx
-    - libselinux-python
-    - virt-manager
-    - libvirt-daemon-config-network
-    - strace
-    - nmap
-    - screen
-    - libvirt-client
-    - feh
-    - xcompmgr
-    - xbacklight
-    - pulseaudio
-    - firewall-config
-    - tuned
-    - lm_sensors
-    - acpi
-    - sysstat
-    # - nitrokey-app
-    - p7zip
-    - powertop
-    - lsyncd
-    - vim-enhanced
-    - tcpdump
-    - tlp
-    - chromium
-    - rxvt-unicode
-    - golang
-    - dep
-    - krb5-workstation
-    - hexchat
-    - minicom
-    - systemtap
-    - pantheon-files
-    - lightdm
-    - java-11-openjdk-devel
-    - overpass-fonts
-    - powerline-fonts
-    - bolt
-    - python2-psutils #fuer bumblebee-status
-    - python2-netifaces #fuer bumblebee-status
+#- name: install basic packages
+  #dnf: name={{ item }} state=present
+  #with_items:
+- name: Install Virt Packages        
+  tags: foo                          
+  shell: |                           
+   rpm-ostree install --idempotent \
+    zsh \
+    git \
+    keepassx \
+    libselinux-python \
+    virt-manager \
+    libvirt-daemon-config-network \
+    strace \
+    nmap \
+    screen \
+    libvirt-client \
+    feh \
+    xcompmgr \
+    xbacklight \
+    firewall-config \
+    tuned \
+    lm_sensors \
+    acpi \
+    sysstat \
+    p7zip \
+    powertop \
+    lsyncd \
+    vim-enhanced \
+    tcpdump \
+    tlp \
+    chromium \
+    rxvt-unicode \
+    golang \
+    dep \
+    krb5-workstation \
+    hexchat \
+    minicom \
+    systemtap \
+    pantheon-files \
+    lightdm \
+    java-11-openjdk-devel \
+    overpass-fonts \
+    powerline-fonts \
+    python2-psutil \
+    python2-netifaces \
+    # bolt \
 
 - name: refresh fonts cache
   debug: 
@@ -56,28 +58,30 @@
 
 # sudo rpm --import https://packages.microsoft.com/keys/microsoft.asc
 # sudo sh -c 'echo -e "[code]\nname=Visual Studio Code\nbaseurl=https://packages.microsoft.com/yumrepos/vscode\nenabled=1\ngpgcheck=1\ngpgkey=https://packages.microsoft.com/keys/microsoft.asc" > /etc/yum.repos.d/vscode.repo'
-- name: import M$ vscode RPM key
-  rpm_key:
-    state: present
-    key: https://packages.microsoft.com/keys/microsoft.asc
+#- name: import M$ vscode RPM key
+#  rpm_key:
+#    state: present
+#    key: https://packages.microsoft.com/keys/microsoft.asc
+#
+#
+#- name: Check that vscode repo def file exists
+#  stat:
+#    path: "{{ vscode_repo_def }}"
+#  register: vscode
+#
+#- name: Create vscode repo def file
+#  file:
+#    path: "{{ vscode_repo_def }}"
+#    state: touch
+#  when: vscode.stat.exists == False
 
 - name: set vscode repo def filepath
   set_fact: vscode_repo_def=/etc/yum.repos.d/vscode.repo
 
-- name: Check that vscode repo def file exists
-  stat:
-    path: "{{ vscode_repo_def }}"
-  register: vscode
-
-- name: Create vscode repo def file
-  file:
-    path: "{{ vscode_repo_def }}"
-    state: touch
-  when: vscode.stat.exists == False
-
 - name: create Yum repo definition
   blockinfile:
     path: "{{ vscode_repo_def }}"
+    create: yes
     block: |
       [code]
       name=Visual Studio Code
@@ -86,8 +90,12 @@
       gpgcheck=1
       gpgkey=https://packages.microsoft.com/keys/microsoft.asc
 
-- name: install Visual Studio Code
-  dnf: name=code state=present
+#- name: install Visual Studio Code
+#  dnf: name=code state=present
+- name: Install Virt Packages        
+  tags: foo                          
+  shell: |                           
+   rpm-ostree install --idempotent code
 
 # - name: check for atom packages
 #   dnf: name=atom state=present
@@ -104,23 +112,23 @@
     - libvirtd
     - tuned
 
-- name: disable gdm
-  service: name={{ item }} state=stopped enabled=no
-  with_items:
-    - gdm
+#- name: disable gdm
+#  service: name={{ item }} state=stopped enabled=no
+#  with_items:
+#    - gdm
+#
+#- name: enable lightgdm
+#  service: name={{ item }} state=started enabled=yes
+#  with_items:
+#    - lightdm
 
-- name: enable lightgdm
-  service: name={{ item }} state=started enabled=yes
-  with_items:
-    - lightdm
-
-- name: enable copr repo for i3-gaps
-  debug: 
-    msg: "sudo dnf copr enable gregw/i3desktop"
-
-- name: enable copr repo for polybar
-  debug: 
-    msg: "dnf copr enable tjuberg/i3-desktop"
+#- name: enable copr repo for i3-gaps
+#  debug: 
+#    msg: "sudo dnf copr enable gregw/i3desktop"
+#
+#- name: enable copr repo for polybar
+#  debug: 
+#    msg: "dnf copr enable tjuberg/i3-desktop"
 
 - name: create firewalld rules for Hetzner OpenShift
   debug: 
@@ -147,3 +155,5 @@
   debug: 
     msg: "sudo ip r add 192.168.178.0/24 via 172.16.0.1"
 
+# sysctl
+# fs.inotify.max_user_watches = 524288

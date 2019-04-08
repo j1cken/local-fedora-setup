@@ -1,33 +1,25 @@
 ---
-- name: create swappiness file if not exists
-  file:
-    path: /etc/sysctl.d/60-swappiness.conf
-    state: touch
-
 - name: set swappiness
   lineinfile:
     path: /etc/sysctl.d/60-swappiness.conf
+    create: yes
     regexp: '^vm.swappiness='
     line: 'vm.swappiness=1'
     backup: yes
 
-- name: create scheduler file if not exists
-  file:
-    path: /etc/udev/rules.d/60-iosched.rules
-    state: touch
+#- name: set Kyber I/O scheduler for SSD
+#  lineinfile:
+#    path: /etc/udev/rules.d/60-iosched.rules
+#    regexp: '.*="kyber"$'
+#    line: 'ACTION=="add|change", KERNEL=="sd[a-z]", ATTR{queue/rotational}=="0", ATTR{queue/scheduler}="kyber"'
+#    backup: yes
 
-- name: set Kyber I/O scheduler for SSD
+- name: set BFQ I/O scheduler
   lineinfile:
     path: /etc/udev/rules.d/60-iosched.rules
-    regexp: '.*="kyber"$'
-    line: 'ACTION=="add|change", KERNEL=="sd[a-z]", ATTR{queue/rotational}=="0", ATTR{queue/scheduler}="kyber"'
-    backup: yes
-
-- name: set BFQ I/O scheduler for rotating HDD
-  lineinfile:
-    path: /etc/udev/rules.d/60-iosched.rules
+    create: yes
     regexp: '.*="bfq"$'
-    line: 'ACTION=="add|change", KERNEL=="sd[a-z]", ATTR{queue/rotational}=="1", ATTR{queue/scheduler}="bfq"'
+    line: 'ACTION=="add|change", KERNEL=="nvme[0-9a-z]*", ATTR{queue/rotational}=="1", ATTR{queue/scheduler}="bfq"'
     backup: yes
 
 
