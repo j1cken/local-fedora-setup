@@ -53,3 +53,10 @@
     name: fstrim.service
     state: started
     enabled: yes
+
+- name: noatime
+  replace:
+    path: /etc/fstab
+    regexp: 'defaults'
+    replace: 'defaults,noatime'
+    backup: yes
