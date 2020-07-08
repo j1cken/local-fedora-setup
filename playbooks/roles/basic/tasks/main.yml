@@ -49,6 +49,7 @@
       - java-11-openjdk-devel
       - overpass-fonts
       - powerline-fonts
+      - nvme-cli
       # - bolt
       # - python2-psutils #fuer bumblebee-status
       # - python2-netifaces #fuer bumblebee-status
@@ -156,6 +157,7 @@
   args:
     creates: /home/torben/.oh-my-zsh
 
+# git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
 
 - name: install xfce terminal theme
   debug:

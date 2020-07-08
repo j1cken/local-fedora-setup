@@ -66,3 +66,9 @@
   copy:
     src: x1-profile
     dest: /usr/lib/tuned/
+
+# bug in tuned
+# https://github.com/redhat-performance/tuned/issues/101
+# torben@x1  ~  cp /etc/udev/rules.d/60-scheduler.rules development/local-fedora-setup/playbooks/roles/trim/files 
+# 8177  sudo udevadm control --reload
+# 8178  sudo udevadm trigger
