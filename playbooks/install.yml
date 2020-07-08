@@ -1,8 +1,8 @@
 ---
 - hosts: localhost
   connection: localhost
-  vars:
-    - atom_version: 1.21.0
+  # vars:
+    # - atom_version: 1.21.0
   handlers:
     - import_tasks: handlers.yml
   roles:
@@ -13,14 +13,14 @@
   # - { role: blk-mq, tags: ['x1','tower'] }
   # replace hw by custom tuned profile
   # - { role: hw, tags: ['x1','tower'] }
-  - { role: glusterfs-client, tags: ['x1','tower', 'gluster'] }
+  # - { role: glusterfs-client, tags: ['x1','tower', 'gluster'] }
   # - { role: nas, tags: ['tower', 'nas'] }
   # - { role: nested-kvm, tags: [] }
   - { role: ovpn, tags: ['x1'] }
   - { role: mmedia, tags: ['x1'] }
-  - { role: google-cloud-sdk, tags: ['x1'] }
+  # - { role: google-cloud-sdk, tags: ['x1'] }
   # - { role: minishift, tags: ['x1', 'minishift'] }
-  - { role: nm, tags: ['x1', 'tower', 'nm'] }
+  # - { role: nm, tags: ['x1', 'tower', 'nm'] }
   # - { role: openshiftv4, tags: ['test'] }
   # - { role: container, tags: ['x1','tower'] }
   # - { role: blk-mq, tags: ['new'] }

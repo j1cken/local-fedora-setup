@@ -4,8 +4,9 @@
   with_items:
     - NetworkManager-openvpn
     - NetworkManager-openvpn-gnome
-    - "{{ role_path }}/files/redhat-internal-cert-install-0.1-7.el7.csb.noarch.rpm"
-    - "{{ role_path }}/files/redhat-internal-NetworkManager-openvpn-profiles-0.1-26.el7.csb.noarch.rpm"
+    # copy /etc/NetworkManager/system-connections and chown root
+    # - "{{ role_path }}/files/redhat-internal-cert-install-0.1-7.el7.csb.noarch.rpm"
+    # - "{{ role_path }}/files/redhat-internal-NetworkManager-openvpn-profiles-0.1-26.el7.csb.noarch.rpm"
 
 - name: hint
   debug:

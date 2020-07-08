@@ -54,9 +54,15 @@
     state: started
     enabled: yes
 
+# todo: not idempotent!!!!
 - name: noatime
   replace:
     path: /etc/fstab
     regexp: 'defaults'
     replace: 'defaults,noatime'
     backup: yes
+
+- name: install custom tuned profile
+  copy:
+    src: x1-profile
+    dest: /usr/lib/tuned/
