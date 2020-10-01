@@ -21,7 +21,7 @@
       - screen
       - libvirt-client
       - feh
-      - xcompmgr
+#      - xcompmgr
       - xbacklight
       - pulseaudio
       - firewall-config
@@ -50,6 +50,9 @@
       - overpass-fonts
       - powerline-fonts
       - nvme-cli
+      - obs-studio
+      - youtube-dl
+      - openshot
       # - bolt
       # - python2-psutils #fuer bumblebee-status
       # - python2-netifaces #fuer bumblebee-status
@@ -108,16 +111,16 @@
     - libvirtd
     - tuned
 
-- name: disable gdm
-  service: name={{ item }} state=stopped enabled=no
-  with_items:
-    - gdm
-
-- name: enable lightgdm
-  service: name={{ item }} state=started enabled=yes
-  with_items:
-    - lightdm
-
+      #- name: disable gdm
+      #  service: name={{ item }} state=stopped enabled=no
+      #  with_items:
+      #    - gdm
+      #
+      #- name: enable lightgdm
+      #  service: name={{ item }} state=started enabled=yes
+      #  with_items:
+      #    - lightdm
+      #
 # - name: enable copr repo for i3-gaps
 #   debug: 
 #     msg: "sudo dnf copr enable gregw/i3desktop"

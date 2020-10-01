@@ -10,7 +10,7 @@ $ sudo dnf install ansible
 ## run
 
 ```shell
-$ ansible-playbook -t <tag> playbooks/install.yml
+$ ansible-playbook -b -t <tag> playbooks/install.yml
 ```
 or
 ```shell

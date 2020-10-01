@@ -8,6 +8,11 @@
     # - "{{ role_path }}/files/redhat-internal-cert-install-0.1-7.el7.csb.noarch.rpm"
     # - "{{ role_path }}/files/redhat-internal-NetworkManager-openvpn-profiles-0.1-26.el7.csb.noarch.rpm"
 
+# copy files, then:
+#    46  sudo chown root.root /etc/NetworkManager/system-connections/*
+#    47  sudo chmod 600 /etc/NetworkManager/system-connections/*
+#    56  sudo systemctl restart NetworkManager.service
+
 - name: hint
   debug:
     msg: "please change your kerberos login"
