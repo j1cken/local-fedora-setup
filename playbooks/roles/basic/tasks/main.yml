@@ -93,6 +93,10 @@
       gpgcheck=1
       gpgkey=https://packages.microsoft.com/keys/microsoft.asc
 
+- name: enable testing kernels
+  debug: 
+    msg: "includepkgs=kernel* in updates-testing"
+
 - name: install Visual Studio Code
   dnf: name=code state=present
 
@@ -108,8 +112,8 @@
 - name: start basic services
   service: name={{ item }} state=restarted enabled=yes
   with_items:
-    - libvirtd
     - tuned
+    # - libvirtd
 
       #- name: disable gdm
       #  service: name={{ item }} state=stopped enabled=no
