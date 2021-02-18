@@ -50,9 +50,10 @@
       - overpass-fonts
       - powerline-fonts
       - nvme-cli
-      - obs-studio
+      # - obs-studio
       - youtube-dl
-      - openshot
+      # - openshot
+      - bat
       # - bolt
       # - python2-psutils #fuer bumblebee-status
       # - python2-netifaces #fuer bumblebee-status
