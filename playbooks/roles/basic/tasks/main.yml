@@ -23,7 +23,7 @@
       - feh
 #      - xcompmgr
       - xbacklight
-      - pulseaudio
+        #- pulseaudio
       - firewall-config
       - tuned
       - lm_sensors
@@ -39,13 +39,10 @@
       - chromium
       - rxvt-unicode
       - golang
-      - dep
       - krb5-workstation
       - hexchat
       - minicom
       - systemtap
-      - pantheon-files
-      - lightdm
       - java-11-openjdk-devel
       - overpass-fonts
       - powerline-fonts
@@ -54,6 +51,7 @@
       - youtube-dl
       # - openshot
       - bat
+      - clipit
       # - bolt
       # - python2-psutils #fuer bumblebee-status
       # - python2-netifaces #fuer bumblebee-status

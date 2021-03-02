@@ -10,4 +10,12 @@
       - libX11-devel
       - libXft-devel
       - libXinerama-devel
+      - zsh
+      - redhat-rpm-config
+      - libva-intel-driver
+      - xorg-x11-drv-intel
+
+- name: install xorg intel driver
+  debug: 
+    msg: "install files/20-intel.conf"
 ...
