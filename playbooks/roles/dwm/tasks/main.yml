@@ -14,6 +14,7 @@
       - redhat-rpm-config
       - libva-intel-driver
       - xorg-x11-drv-intel
+      - xsetroot
 
 - name: install xorg intel driver
   debug: 
