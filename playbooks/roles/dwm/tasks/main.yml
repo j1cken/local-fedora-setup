@@ -15,6 +15,7 @@
       - libva-intel-driver
       - xorg-x11-drv-intel
       - xsetroot
+      - xset
 
 - name: install xorg intel driver
   debug: 
