@@ -1,0 +1,10 @@
+---
+- name: install basic packages
+  dnf: 
+    state: present
+    name: 
+      - cmake
+      - gcc-c++
+      - obs-studio-devel
+      - qt5-qtbase-devel
+...

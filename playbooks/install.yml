@@ -8,6 +8,7 @@
   roles:
   - { role: dwm, tags: ['init'] }
   - { role: basic, tags: ['x1','tower'] }
+  - { role: obs, tags: ['x1'] }
   # - { role: i3, tags: ['x1','tower'] }
   # - { role: sway, tags: ['x1','tower'] }
   - { role: trim, tags: ['x1','tower'] }
