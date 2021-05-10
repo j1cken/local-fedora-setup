@@ -52,6 +52,8 @@
       # - openshot
       - bat
       - clipit
+      - python3-kubernetes
+      - python3-openshift
       # - bolt
       # - python2-psutils #fuer bumblebee-status
       # - python2-netifaces #fuer bumblebee-status
