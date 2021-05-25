@@ -54,6 +54,7 @@
       - clipit
       - python3-kubernetes
       - python3-openshift
+      - httpie
       # - bolt
       # - python2-psutils #fuer bumblebee-status
       # - python2-netifaces #fuer bumblebee-status
