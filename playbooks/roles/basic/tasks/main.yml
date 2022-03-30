@@ -58,6 +58,11 @@
       # - bolt
       # - python2-psutils #fuer bumblebee-status
       # - python2-netifaces #fuer bumblebee-status
+      - neovim
+      - ripgrep
+      - codespell
+      - exa
+      - fzf
 
 - name: refresh fonts cache
   debug: 
